@@ -41,13 +41,26 @@ class Boss < ActiveRecord::Base
   end
 
   def choose_target
+    p hate_table
     update_hate_table
-    Character.find(hate_table.sort {|(ka, va), (kb, vb)| va <=> vb }.first.first)
+    sorted = hate_table.sort {|(ka, va), (kb, vb)| va <=> vb }
+    p hate_table
+    if sorted.first.present?
+      Character.find(sorted.first.first)
+    else
+      nil
+    end
   end
 
-  def attack
+  def attack!
     character = choose_target
-    character.receive_damage(power.sample)
+    p character
+    if character.present?
+      character.receive_damage(Random.rand(power))
+      character.save
+    else
+      # log
+    end
   end
 
   def power
