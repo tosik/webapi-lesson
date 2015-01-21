@@ -7,14 +7,19 @@ class BattleController < ApplicationController
     end
 
     current_user.create_character(job: params[:job])
-    render json: { character: character.to_json }
+    boss.activities.create(text: "キャラクター #{character.name} が　たんじょうした！")
+    render json: {
+      character_id: character.id,
+      characters: characters,
+      activities: Activity.all.map(&:text),
+    }
   end
 
   def attack
     battle.attack(character)
 
     render json: {
-      character: character.to_json,
+      character_id: character.id,
       characters: characters,
       activities: Activity.all.map(&:text),
     }
@@ -25,7 +30,7 @@ class BattleController < ApplicationController
     battle.heal(character, target)
 
     render json: {
-      character: character.to_json,
+      character_id: character.id,
       characters: characters,
       activities: Activity.all.map(&:text),
     }

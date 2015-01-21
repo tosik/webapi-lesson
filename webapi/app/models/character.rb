@@ -39,7 +39,9 @@ class Character < ActiveRecord::Base
   end
 
   def heal(target)
-    target.recover(100)
+    points = Random.rand((80..120))
+    target.recover(points)
+    points
   end
 
   def recover(point)
@@ -76,7 +78,7 @@ class Character < ActiveRecord::Base
   end
 
   def to_json
-    { hp: hp, max_hp: max_hp, job: job }
+    { hp: hp, max_hp: max_hp, job: job, id: id }
   end
 
 end
