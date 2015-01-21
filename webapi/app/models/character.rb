@@ -1,6 +1,8 @@
 class Character < ActiveRecord::Base
   belongs_to :user
 
+  scope :living, -> { where('hp > 0') }
+
   def attack(boss)
     boss.receive_damage(Random.rand(power), self)
   end
@@ -30,6 +32,10 @@ class Character < ActiveRecord::Base
     hp <= 0
   end
 
+  def live?
+    not dead?
+  end
+
   def heal(target)
     target.recover(100)
   end
@@ -41,6 +47,10 @@ class Character < ActiveRecord::Base
 
   def max_hp
     status[:max_hp]
+  end
+
+  def maximize_hp
+    self.hp = max_hp
   end
 
   def receive_damage(damage)
@@ -57,6 +67,10 @@ class Character < ActiveRecord::Base
 
   def magician?
     job == "magician"
+  end
+
+  def to_json
+    { hp: hp, max_hp: max_hp, job: job }
   end
 
 end

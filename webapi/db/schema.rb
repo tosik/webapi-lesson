@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150120073505) do
+ActiveRecord::Schema.define(version: 20150121062239) do
 
   create_table "activities", force: :cascade do |t|
     t.text     "text"
@@ -44,6 +44,7 @@ ActiveRecord::Schema.define(version: 20150120073505) do
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "session_id"
   end
 
 end

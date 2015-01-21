@@ -67,4 +67,8 @@ class Boss < ActiveRecord::Base
     (50..100)
   end
 
+  def to_json
+    { hp: hp, max_hp: max_hp }
+  end
+
 end

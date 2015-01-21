@@ -53,4 +53,9 @@ Rails.application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
+
+  match '/create_character', to: 'battle#create_character', via: [:post]
+  match '/attack', to: 'battle#attack', via: [:post]
+  match '/login', to: 'login#create', via: [:post]
+
 end

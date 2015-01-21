@@ -1,5 +1,9 @@
 class Battle
 
+  def initialize(boss=nil)
+    resume(boss)
+  end
+
   def resume(boss)
     @boss = boss
   end
@@ -23,6 +27,7 @@ class Battle
 
   def heal(from, to)
     # log unless from.healer?
+    # log unless from.dead?
 
     if to.present?
       from.heal(to)
