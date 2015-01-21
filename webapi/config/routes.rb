@@ -56,6 +56,7 @@ Rails.application.routes.draw do
 
   match '/create_character', to: 'battle#create_character', via: [:post]
   match '/attack', to: 'battle#attack', via: [:post]
+  match '/heal', to: 'battle#heal', via: [:post]
   match '/login', to: 'login#create', via: [:post]
 
 end

@@ -11,7 +11,8 @@ class LoginController < ApplicationController
     render json: {
       session_id: user.session_id,
       character: user.character.try(:to_json),
-      boss: Boss.first.to_json
+      boss: Boss.first.to_json,
+      activities: Activity.all.map(&:text),
     }
   end
 

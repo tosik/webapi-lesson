@@ -10,6 +10,8 @@ class Battle
 
   def start
     @boss = Boss.create
+    @boss.init!
+    @boss.activities.create(text: "ボス　が　あられた")
   end
 
   def update
@@ -17,28 +19,52 @@ class Battle
   end
 
   def attack(character)
-    character.attack(@boss)
+    damage = character.attack(@boss)
+    if character.live?
+      @boss.activities.create(text: "#{character.name}　のこうげき！\nボス　は #{damage} ダメージをうけた！")
+    else
+      @boss.activities.create(text: "#{character.name}　のこうげき！\nしかし　#{character.name}　はすでに　しんでいる")
+    end
 
     character.save
     @boss.save
 
-    @boss.attack!
+    attack_from_boss
   end
 
   def heal(from, to)
-    # log unless from.healer?
-    # log unless from.dead?
+    unless from.healer?
+      @boss.activities.create(text: "#{from.name}　のヒール！\nしかし　#{from.name}　はヒーラーではなかった")
+      attack_from_boss
+      return
+    end
+    if from.dead?
+      @boss.activities.create(text: "#{from.name}　のヒール！\nしかし　#{from.name}　はすでに　しんでいる")
+      attack_from_boss
+      return
+    end
 
     if to.present?
       from.heal(to)
     else
-      # log
+      @boss.activities.create(text: "#{from.name}　のヒール！\nしかし　あいてはこのよに　いない！")
     end
 
-    to.save
-    from.save
+    to.try(:save)
+    from.try(:save)
 
-    @boss.attack!
+    attack_from_boss
+  end
+
+  def attack_from_boss
+    result = @boss.attack!
+    target_character = result[:target]
+    damage = result[:damage]
+    if target_character.present?
+      @boss.activities.create(text: "ボス　のこうげき！\n#{target_character.name}　は #{damage} ダメージをうけた！")
+    else
+      @boss.activities.create(text: "ボス　のこうげき！\nしかし　あいては　すでに　しんでいる")
+    end
   end
 
 end

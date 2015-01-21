@@ -1,4 +1,5 @@
 class Boss < ActiveRecord::Base
+  has_many :activities
 
   serialize :hate_table
 
@@ -41,10 +42,8 @@ class Boss < ActiveRecord::Base
   end
 
   def choose_target
-    p hate_table
     update_hate_table
     sorted = hate_table.sort {|(ka, va), (kb, vb)| va <=> vb }
-    p hate_table
     if sorted.first.present?
       Character.find(sorted.first.first)
     else
@@ -54,21 +53,31 @@ class Boss < ActiveRecord::Base
 
   def attack!
     character = choose_target
-    p character
     if character.present?
-      character.receive_damage(Random.rand(power))
+      damage = Random.rand(power)
+      character.receive_damage(damage)
       character.save
-    else
-      # log
     end
+
+    { target: character, damage: damage || 0 }
   end
 
   def power
     (50..100)
   end
 
+  def maximize_hp
+    self.hp = max_hp
+  end
+
   def to_json
     { hp: hp, max_hp: max_hp }
+  end
+
+  def init!
+    maximize_hp
+    self.hate_table = {}
+    save
   end
 
 end

@@ -4,7 +4,9 @@ class Character < ActiveRecord::Base
   scope :living, -> { where('hp > 0') }
 
   def attack(boss)
-    boss.receive_damage(Random.rand(power), self)
+    damage = Random.rand(power)
+    boss.receive_damage(damage, self)
+    damage
   end
 
   def power
@@ -67,6 +69,10 @@ class Character < ActiveRecord::Base
 
   def magician?
     job == "magician"
+  end
+
+  def name
+    "#{user.name}(#{job})"
   end
 
   def to_json

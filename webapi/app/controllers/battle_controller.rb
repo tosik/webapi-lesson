@@ -13,7 +13,22 @@ class BattleController < ApplicationController
   def attack
     battle.attack(character)
 
-    render json: { character: character.to_json, characters: characters }
+    render json: {
+      character: character.to_json,
+      characters: characters,
+      activities: Activity.all.map(&:text),
+    }
+  end
+
+  def heal
+    target = Character.where(id: params[:target_id]).first
+    battle.heal(character, target)
+
+    render json: {
+      character: character.to_json,
+      characters: characters,
+      activities: Activity.all.map(&:text),
+    }
   end
 
 
