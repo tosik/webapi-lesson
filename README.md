@@ -1,5 +1,15 @@
 # webapi-lesson
 
+## ゲーム概要
+
+ボスを複数人で殴って倒そう。
+キャラクターにはジョブがある。
+ファイターは攻撃力が高く、ヒーラーは回復もできるがヘイトを集めやすい。
+誰かが行動を取るとボスも攻撃してくる。
+ボスを倒すとクリア。
+キャラクターはいくつでも参戦できる（ひとり１つずつ）
+
+
 ## API 仕様
 
 ```
@@ -40,6 +50,8 @@ response
     "session_id" : Integer,
     "activities" : [String]
   }
+  
+`session_id` はログイン後のAPIの `session_id` パラメータに使おう
 ```
 
 ```
@@ -57,6 +69,10 @@ response
     "characters" : [Character],
     "activities" : [String]
   }
+  
+キャラクターは1つだけ持てる。
+死んでいたら作り直せる。
+ジョブを選択することができる。
 ```
 
 ```
@@ -88,4 +104,7 @@ response
     "characters" : [Character],
     "activities" : [String]
   }
+  
+target_id に指定したキャラクターを回復できる。
+ファイターには使えない。
 ```
