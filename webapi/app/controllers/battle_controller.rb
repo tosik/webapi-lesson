@@ -19,7 +19,6 @@ class BattleController < ApplicationController
     battle.attack(character)
 
     render json: {
-      character_id: character.id,
       characters: characters,
       activities: Activity.all.map(&:text),
     }
@@ -30,7 +29,6 @@ class BattleController < ApplicationController
     battle.heal(character, target)
 
     render json: {
-      character_id: character.id,
       characters: characters,
       activities: Activity.all.map(&:text),
     }
